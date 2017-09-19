@@ -1,4 +1,4 @@
-defmodule EB.User.Loader.Worker do
+defmodule EB.User.Worker do
   def start_link(job) do
     # job: [{id1, pid1}, {id2, pid2}, ...]
     Task.start_link(fn ->

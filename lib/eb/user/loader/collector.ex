@@ -1,4 +1,4 @@
-defmodule EB.User.Batcher do
+defmodule EB.User.Loader.Collector do
   use GenStage
 
   def start_link([]) do
@@ -9,7 +9,7 @@ defmodule EB.User.Batcher do
     {
       :producer_consumer,
       nil,
-      subscribe_to: [{EB.User.Loader, max_demand: 500, interval: 500}]
+      subscribe_to: [{EB.User.Loader.Producer, max_demand: 500, interval: 500}]
     }
   end
 

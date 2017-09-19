@@ -1,4 +1,4 @@
-defmodule EB.User.WorkerSupervisor do
+defmodule EB.User.Loader.Consumer do
   use ConsumerSupervisor
 
   def start_link([]) do
@@ -8,9 +8,9 @@ defmodule EB.User.WorkerSupervisor do
   def init(:ok) do
     {
       :ok,
-      [worker(EB.User.Worker, [], restart: :temporary)],
+      [worker(EB.User.Loader.Worker, [], restart: :temporary)],
       strategy: :one_for_one,
-      subscribe_to: [{EB.User.Batcher, min_demand: 1, max_demand: 5}]
+      subscribe_to: [{EB.User.Loader.Collector, min_demand: 1, max_demand: 5}]
     }
   end
 end

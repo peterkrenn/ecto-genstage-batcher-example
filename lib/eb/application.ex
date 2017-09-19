@@ -7,9 +7,7 @@ defmodule EB.Application do
       {Registry, keys: :unique, name: EB.Session.Registry},
       EB.Session.Supervisor,
       EB.Dispatcher,
-      EB.User.Loader,
-      EB.User.Batcher,
-      EB.User.WorkerSupervisor
+      EB.User.Loader.Supervisor
     ]
 
     opts = [strategy: :one_for_one, name: EB.Supervisor]
