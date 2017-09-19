@@ -88,7 +88,7 @@ defmodule EB.Session do
   end
 
   defp process_level(%{xp_required: xp_required} = user)
-  when xp_required < 0 do
+  when xp_required <= 0 do
     level = user.level + 1
     xp_required = level * level * 10 + 10
     %{user | level: level, xp_required: xp_required}
