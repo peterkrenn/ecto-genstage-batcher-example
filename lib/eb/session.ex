@@ -6,7 +6,6 @@ defmodule EB.Session do
   def start_link(user_id) do
     name = {:via, Registry, {EB.Session.Registry, user_id}}
     {:ok, pid} = GenServer.start_link(__MODULE__, user_id, name: name)
-    GenServer.cast(pid, :load_user)
 
     {:ok, pid}
   end
@@ -42,16 +41,10 @@ defmodule EB.Session do
   end
 
   def init(user_id) do
+    EB.User.Loader.load(user_id)
     {:ok, %{user: %EB.User{id: user_id}, queue: :queue.new, state: :loading_user}}
   end
 
-  def handle_cast(
-    :load_user,
-    %{user: %EB.User{id: user_id}, state: :loading_user} = session
-  ) do
-    EB.User.Loader.load(user_id)
-    {:noreply, session}
-  end
   def handle_cast(
     {:put_user, user},
     %{state: :loading_user, queue: queue} = session
