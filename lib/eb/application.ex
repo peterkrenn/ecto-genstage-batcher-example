@@ -6,8 +6,8 @@ defmodule EB.Application do
       EB.Repo,
       {Registry, keys: :unique, name: EB.Session.Registry},
       EB.Session.Supervisor,
-      EB.Dispatcher,
-      EB.User.Loader.Supervisor
+      EB.User.Loader.Supervisor,
+      EB.Dispatcher
     ]
 
     opts = [strategy: :one_for_one, name: EB.Supervisor]
