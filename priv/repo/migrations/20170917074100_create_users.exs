@@ -4,7 +4,7 @@ defmodule EB.Repo.Migrations.CreateUsers do
   def change do
     create table(:users) do
       add :level, :integer, default: 1
-      add :xp_required, :integer, default: 19
+      add :xp_required, :integer, default: 10
     end
   end
 end
