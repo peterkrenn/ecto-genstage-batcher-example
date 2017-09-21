@@ -16,7 +16,7 @@ defmodule EB.User.Loader.Collector do
   def handle_subscribe(:producer, options, from, nil) do
     %{
       producer: from,
-      pending: options[:max_demand],
+      demand: options[:max_demand],
       interval: options[:interval],
       buffer: []
     }
@@ -31,11 +31,11 @@ defmodule EB.User.Loader.Collector do
     {:noreply, [], nil}
   end
 
-  def handle_events(events, _from, %{pending: pending, buffer: buffer} = state) do
+  def handle_events(events, _from, %{demand: demand, buffer: buffer} = state) do
     {
       :noreply,
       [],
-      %{state | pending: pending + length(events), buffer: buffer ++ events}
+      %{state | demand: demand + length(events), buffer: buffer ++ events}
     }
   end
 
@@ -47,10 +47,10 @@ defmodule EB.User.Loader.Collector do
   end
 
   defp ask_and_schedule(
-    %{producer: producer, pending: pending, interval: interval} = state
+    %{producer: producer, demand: demand, interval: interval} = state
   ) do
-    GenStage.ask(producer, pending)
+    GenStage.ask(producer, demand)
     Process.send_after(self(), :ask, interval)
-    %{state | pending: 0}
+    %{state | demand: 0}
   end
 end
